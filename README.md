@@ -4,7 +4,7 @@
 
 `yarn install`
 
-`yarn run --scope client start`
+`yarn workspace client start`
 
 ```javascript
 // App.js
