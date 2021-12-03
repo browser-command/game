@@ -1,51 +1,21 @@
 # Browser Command
 
-## Usage
+A multiplayer browser-based RTS game.
 
-`yarn install`
+## Install
 
-`yarn workspace client start`
+## Development
 
-```javascript
-// App.js
+`npm install`
 
-const App = () => {
-    const { players } = useStore()
+Client:
 
-    return (
-        <>
-        { players.map((player) => <PlayerProvider value={player}><Player >  <Unit/></Player></PlayerProvider>) }
-        </>
-    )
-}
+`npm run start:client`
 
-const PlayerContext = createContext()
+Server:
 
-export { PlayerProvider: PlayerContext.Provider }
+`npm run start:server`
 
-export const usePlayer() {
-    return useContext(PlayerContext)
-}
+Parallel:
 
-// Player.js
-const Player = () => {
-    const { entities } = usePlayer()
-
-    for (const entitiy of entities) {
-        const Component = entities.get(entity.type)
-
-        <Component {...entity.props} />
-    }
-}
-
-// Unit.js
-
-const Unit = ({ model }) => {
-    const player = usePlayer() // Access the owning player
-
-    // const mesh = useGLTF()
-    // ... render components (position, rotation, scale, ...)
- }
-
-entities.register('unit', Unit)
-```
+`npm run start`
