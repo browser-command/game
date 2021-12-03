@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * @function useSocket
@@ -11,7 +11,9 @@ export const useSocket = () => {
   const production = process.env.NODE_ENV === 'production';
 
   useEffect(() => {
-    const socket = io(`ws://${window.location.hostname}:${production ? 3000 : 5000}`);
+    const socket = io(
+      `ws://${window.location.hostname}:${production ? 3000 : 5000}`
+    );
     setSocket(socket);
     return () => {
       socket.disconnect();

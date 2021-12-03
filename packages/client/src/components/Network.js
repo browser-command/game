@@ -1,25 +1,27 @@
-import React, {useEffect} from 'react';
-import {useSocket} from '../hooks';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+
+import { useSocket } from '../hooks';
 
 export const Network = ({ children }) => {
-  const socket = useSocket()
+  const socket = useSocket();
 
   useEffect(() => {
     socket.on('connect', () => {
-      console.log('connected')
-    })
+      console.log('connected');
+    });
     socket.on('disconnect', () => {
-      console.log('disconnected')
-    })
+      console.log('disconnected');
+    });
 
     return () => {
-      socket.disconnect()
-    }
-  }, [socket])
+      socket.disconnect();
+    };
+  }, [socket]);
 
-  return (
-    <>
-      {children}
-    </>
-  )
-}
+  return <>{children}</>;
+};
+
+Network.propTypes = {
+  children: PropTypes.node,
+};
