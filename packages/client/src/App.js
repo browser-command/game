@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import * as THREE from 'three';
+import {Canvas} from '@react-three/fiber';
+
+import './index.css'
+import {Stars} from './entities';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Canvas linear mode={"concurrent"}
+              camera={{ position: [0, 0, 2000], near: 0.01, far: 10000, fov: 45 }}
+              onCreated={({ gl, camera }) => {
+        gl.setClearColor(new THREE.Color('#020209'))
+      }}>
+        <fog attach="fog" args={['#070710', 100, 700]} />
+        <ambientLight intensity={0.25} />
+        <Stars/>
+      </Canvas>
     </div>
   );
 }
