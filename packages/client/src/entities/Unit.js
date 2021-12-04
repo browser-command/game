@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box } from '@react-three/drei';
+import { Box, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 export const Unit = ({ ...props }) => {
@@ -11,9 +11,7 @@ export const Unit = ({ ...props }) => {
 	const [clicked, click] = useState(false);
 
 	useFrame(() => {
-		if (!hovered) {
-			ref.current.rotation.y += 0.01;
-		}
+		ref.current.rotation.y += 0.01;
 	});
 
 	return (
@@ -26,6 +24,9 @@ export const Unit = ({ ...props }) => {
 			onPointerOut={() => hover(false)}
 		>
 			<meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+			<Html center distanceFactor={20} style={{ color: '#FFFFFF' }}>
+				Unit
+			</Html>
 		</Box>
 	);
 };
