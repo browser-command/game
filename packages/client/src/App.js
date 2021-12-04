@@ -3,6 +3,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 
 import './index.css';
+import { Selection } from './components';
 import { Unit, Particles } from './entities';
 import { OrbitControls, Stars, Stats } from '@react-three/drei';
 
@@ -18,7 +19,9 @@ function App() {
 			</gridHelper>
 			<Stars />
 			<Particles />
-			<Unit position={[0, 0, 0]} />
+			<Selection>
+				<Unit position={[0, 0, 0]} />
+			</Selection>
 			<OrbitControls />
 		</Canvas>
 	);
