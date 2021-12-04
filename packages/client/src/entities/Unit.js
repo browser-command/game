@@ -23,8 +23,8 @@ export const Unit = ({ ...props }) => {
 			onPointerOver={() => hover(true)}
 			onPointerOut={() => hover(false)}
 		>
-			<meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-			<Html center distanceFactor={20} style={{ color: '#FFFFFF' }}>
+			<meshStandardMaterial attach={'material'} color={hovered ? 'hotpink' : 'orange'} />
+			<Html center distanceFactor={30} style={{ color: '#FFFFFF' }}>
 				Unit
 			</Html>
 		</Box>
