@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useThree } from '@react-three/fiber';
 
@@ -11,7 +11,7 @@ export const Selection = ({ children }) => {
 
 	const selecting = useRef(false);
 	const selectionBox = new SelectionBox(camera, scene);
-	const selection = useRef(new Set());
+	const [selection, setSelection] = useState(new Set());
 
 	const mouseCoords = (event) => [
 		(event.clientX / window.innerWidth) * 2 - 1,
@@ -20,7 +20,7 @@ export const Selection = ({ children }) => {
 
 	const mouseDown = (event) => {
 		if (!selecting.current) {
-			selection.current = new Set();
+			setSelection(new Set(selectionBox.select()));
 			selecting.current = true;
 			const [x, y] = mouseCoords(event);
 			selectionBox.startPoint.set(x, y, 0.5);
@@ -32,7 +32,7 @@ export const Selection = ({ children }) => {
 			selecting.current = false;
 			const [x, y] = mouseCoords(event);
 			selectionBox.endPoint.set(x, y, 0.5);
-			selection.current = new Set(selectionBox.select());
+			setSelection(new Set(selectionBox.select()));
 			console.log(selection.current);
 		}
 	};
@@ -40,7 +40,7 @@ export const Selection = ({ children }) => {
 		if (selecting.current) {
 			const [x, y] = mouseCoords(event);
 			selectionBox.endPoint.set(x, y, 0.5);
-			selection.current = new Set(selectionBox.select());
+			setSelection(new Set(selectionBox.select()));
 		}
 	};
 
@@ -56,9 +56,7 @@ export const Selection = ({ children }) => {
 		};
 	}, []);
 
-	return (
-		<SelectionContext.Provider value={selection.current}>{children}</SelectionContext.Provider>
-	);
+	return <SelectionContext.Provider value={selection}>{children}</SelectionContext.Provider>;
 };
 
 Selection.propTypes = {
