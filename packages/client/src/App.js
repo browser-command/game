@@ -6,8 +6,10 @@ import './index.css';
 import { Selection } from './components';
 import { Unit, Particles } from './entities';
 import { OrbitControls, Stars, Stats } from '@react-three/drei';
+import { useSelector } from 'react-redux';
 
 function App() {
+	const state = useSelector((state) => state);
 	return (
 		<Canvas camera={{ position: [-20, 20, -20], fov: 75 }}>
 			<Stats />
