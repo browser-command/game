@@ -1,26 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 
-import { Entity, Selection } from './components';
-import { useGameStore } from './stores';
-import { Space } from './scenes';
+import { Entity } from './Entity';
+import { Selection } from './Selection';
+import { useGameStore } from '../stores';
 
-export const Game = () => {
+export const Game = ({ children }) => {
 	const entities = useGameStore((state) => state.entities);
 	const registry = useGameStore((state) => state.components);
 
 	return (
 		<Canvas mode="concurrent" camera={{ position: [-20, 20, -20], fov: 75 }}>
 			<Stats />
-			<Space />
+			{children}
 			<Selection>
 				{entities.map(({ id, components, ...props }) => (
 					<Entity key={id} {...props}>
-						{components.map(({ id, ...props }) => {
-							const Component = registry.get(id);
-							return <Component key={id} {...props} />;
+						{components.map(({ $id, ...props }) => {
+							if (!registry.get($id)) {
+								return null;
+							}
+							const Component = registry.get($id);
+							return <Component key={$id} {...props} />;
 						})}
 					</Entity>
 				))}
@@ -28,4 +32,8 @@ export const Game = () => {
 			<OrbitControls />
 		</Canvas>
 	);
+};
+
+Game.propTypes = {
+	children: PropTypes.node,
 };

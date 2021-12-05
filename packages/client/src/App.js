@@ -1,10 +1,16 @@
 import React from 'react';
 
-import { Game } from './Game';
+import { Game } from './game';
+import { Space } from './scenes';
+
 import './index.css';
 
 function App() {
-	return <Game />;
+	return (
+		<Game>
+			<Space />
+		</Game>
+	);
 }
 
 export default App;

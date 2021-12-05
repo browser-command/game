@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Stars } from '@react-three/drei';
-import { Particles } from '../entities';
+import { Particles } from './Particles';
 
 export const Space = () => {
 	return (
