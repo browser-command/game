@@ -1,13 +1,16 @@
 import React from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 
 import { Canvas } from '@react-three/fiber';
-import { Box, OrbitControls, Stars, Stats } from '@react-three/drei';
+import { OrbitControls, Stars, Stats } from '@react-three/drei';
 
-import { Particles, Unit } from './entities';
-import { Selection } from './components';
+import { Particles } from './entities';
+import { Entity, Selection } from './components';
+import { useGameStore } from './stores';
 
 export const Game = () => {
+	const entities = useGameStore((state) => state.entities);
+	const registry = useGameStore((state) => state.components);
+
 	return (
 		<Canvas camera={{ position: [-20, 20, -20], fov: 75 }}>
 			<Stats />
@@ -20,9 +23,14 @@ export const Game = () => {
 			<Stars />
 			<Particles />
 			<Selection>
-				<ErrorBoundary FallbackComponent={Box}>
-					<Unit position={[0, 0, 0]} />
-				</ErrorBoundary>
+				{entities.map(({ id, components, ...props }) => (
+					<Entity key={id} {...props}>
+						{components.map(({ id, ...props }) => {
+							const Component = registry.get(id);
+							return <Component key={id} {...props} />;
+						})}
+					</Entity>
+				))}
 			</Selection>
 			<OrbitControls />
 		</Canvas>

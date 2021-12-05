@@ -7,16 +7,22 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 import { useComponentRegistry } from '../hooks';
 import { Box } from '@react-three/drei';
+import { useGameStore } from '../stores';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export const Model = ({ src }) => {
 	useComponentRegistry('model', {});
 
 	return (
-		<Suspense fallback={<Box />}>
-			<ModelInternal src={src} />;
-		</Suspense>
+		<ErrorBoundary fallback={<Box />}>
+			<Suspense fallback={<Box />}>
+				<ModelInternal src={src} />;
+			</Suspense>
+		</ErrorBoundary>
 	);
 };
+
+useGameStore.getState().components.register('model', Model);
 
 Model.propTypes = {
 	src: PropTypes.string.isRequired,
