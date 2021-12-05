@@ -1,15 +1,13 @@
 import React from 'react';
 
 import { Canvas } from '@react-three/fiber';
+import { Box, OrbitControls, Stars, Stats } from '@react-three/drei';
 
 import './index.css';
 import { Selection } from './components';
 import { Unit, Particles } from './entities';
-import { OrbitControls, Stars, Stats } from '@react-three/drei';
-import { useSelector } from 'react-redux';
-
+import { ErrorBoundary } from 'react-error-boundary';
 function App() {
-	const state = useSelector((state) => state);
 	return (
 		<Canvas camera={{ position: [-20, 20, -20], fov: 75 }}>
 			<Stats />
@@ -22,7 +20,9 @@ function App() {
 			<Stars />
 			<Particles />
 			<Selection>
-				<Unit position={[0, 0, 0]} />
+				<ErrorBoundary FallbackComponent={Box}>
+					<Unit position={[0, 0, 0]} />
+				</ErrorBoundary>
 			</Selection>
 			<OrbitControls />
 		</Canvas>

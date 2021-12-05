@@ -13,10 +13,6 @@ export const Network = ({ children }) => {
 		socket.on('disconnect', () => {
 			console.log('disconnected');
 		});
-
-		return () => {
-			socket.disconnect();
-		};
 	}, [socket]);
 
 	return <>{children}</>;

@@ -10,6 +10,8 @@ export const Selection = ({ children }) => {
 	const { camera, scene, gl } = useThree();
 
 	const selecting = useRef(false);
+	const selectionElement = useRef(document.createElement('div'));
+
 	const selectionBox = new SelectionBox(camera, scene);
 	const [selection, setSelection] = useState(new Set());
 
@@ -20,31 +22,63 @@ export const Selection = ({ children }) => {
 
 	const mouseDown = (event) => {
 		if (!selecting.current) {
-			setSelection(new Set(selectionBox.select()));
 			selecting.current = true;
+
 			const [x, y] = mouseCoords(event);
+
 			selectionBox.startPoint.set(x, y, 0.5);
 			selectionBox.endPoint.set(x, y, 0.5);
+
+			setSelection(new Set(selectionBox.select()));
+
+			gl.domElement.parentElement.appendChild(selectionElement.current);
 		}
 	};
 	const mouseUp = (event) => {
 		if (selecting.current) {
 			selecting.current = false;
+
 			const [x, y] = mouseCoords(event);
+
 			selectionBox.endPoint.set(x, y, 0.5);
+
 			setSelection(new Set(selectionBox.select()));
-			console.log(selection.current);
+
+			gl.domElement.parentElement.removeChild(selectionElement.current);
+
+			const element = selectionElement.current;
+
+			element.style.left = `${x}px`;
+			element.style.top = `${y}px`;
+			element.style.width = '0px';
+			element.style.height = '0px';
 		}
 	};
 	const mouseMove = (event) => {
 		if (selecting.current) {
 			const [x, y] = mouseCoords(event);
+
 			selectionBox.endPoint.set(x, y, 0.5);
+
 			setSelection(new Set(selectionBox.select()));
+
+			const bottomRightX = Math.max(selectionBox.startPoint.x, x);
+			const bottomRightY = Math.max(selectionBox.startPoint.y, y);
+			const topLeftX = Math.min(selectionBox.startPoint.x, x);
+			const topLeftY = Math.min(selectionBox.startPoint.y, y);
+
+			const element = selectionElement.current;
+			element.style.left = `${topLeftX}px`;
+			element.style.top = `${topLeftY}px`;
+			element.style.width = `${bottomRightX - topLeftX}px`;
+			element.style.height = `${bottomRightY - topLeftY}px`;
 		}
 	};
 
 	useEffect(() => {
+		selectionElement.current.classList.add('selection');
+		selectionElement.current.style.pointerEvents = 'none';
+
 		gl.domElement.addEventListener('mousedown', mouseDown);
 		gl.domElement.addEventListener('mouseup', mouseUp);
 		gl.domElement.addEventListener('mousemove', mouseMove);
