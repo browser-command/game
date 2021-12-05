@@ -1,24 +1,16 @@
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 
-import { useLoader } from '@react-three/fiber';
-
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-
-import { useComponentRegistry } from '../hooks';
-import { Box } from '@react-three/drei';
+import { useComponentRegistry, useOBJ } from '../hooks';
 import { useGameStore } from '../stores';
-import { ErrorBoundary } from 'react-error-boundary';
 
 export const Model = ({ src }) => {
 	useComponentRegistry('model', {});
 
 	return (
-		<ErrorBoundary fallback={<Box />}>
-			<Suspense fallback={<Box />}>
-				<ModelInternal src={src} />;
-			</Suspense>
-		</ErrorBoundary>
+		<Suspense fallback={null}>
+			<ModelInternal src={src} />
+		</Suspense>
 	);
 };
 
@@ -29,9 +21,7 @@ Model.propTypes = {
 };
 
 const ModelInternal = ({ src }) => {
-	const object = useLoader(OBJLoader, src);
-
-	console.log(object);
+	const object = useOBJ(src);
 
 	return <primitive object={object} />;
 };

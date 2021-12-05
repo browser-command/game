@@ -12,7 +12,7 @@ export const Game = () => {
 	const registry = useGameStore((state) => state.components);
 
 	return (
-		<Canvas camera={{ position: [-20, 20, -20], fov: 75 }}>
+		<Canvas mode="concurrent" camera={{ position: [-20, 20, -20], fov: 75 }}>
 			<Stats />
 			<Space />
 			<Selection>
