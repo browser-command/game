@@ -12,13 +12,13 @@ export const Model = ({ src }) => {
 	const [position, setPosition] = useState([0, 0, 0]);
 
 	useFrame(() => {
-		const position = components.get('Position');
+		const { position } = components.get('Transform');
 		if (position) {
 			setPosition([position.x, position.y, position.z]);
 		}
 	});
 
-	useComponentRegistry('model', {
+	useComponentRegistry('Model', {
 		src,
 	});
 

@@ -1,13 +1,17 @@
-import { float, map, model, object, string } from '@browser-command/core';
+import { map, model, object, string, Vector3, Quaternion, boolean } from '@browser-command/core';
 
-export const Position = model('Position', {
-	x: float,
-	y: float,
-	z: float,
+export const Transform = model('Transform', {
+	position: Vector3,
+	rotation: Quaternion,
 });
 
 export const Model = model('Model', {
 	src: string,
+});
+
+export const Movable = model('Movable', {
+	moving: boolean,
+	target: Vector3,
 });
 
 /**

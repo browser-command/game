@@ -20,7 +20,11 @@ export const Game = ({ children, components }) => {
 	}, [register, components]);
 
 	return (
-		<Canvas mode="concurrent" camera={{ position: [-20, 20, -20], fov: 75 }}>
+		<Canvas
+			mode="concurrent"
+			camera={{ position: [-20, 20, -20], fov: 75 }}
+			gl={{ physicallyCorrectLights: true }}
+		>
 			<Stats />
 			{children}
 			<Selection>
@@ -40,5 +44,5 @@ export const Game = ({ children, components }) => {
 
 Game.propTypes = {
 	children: PropTypes.node,
-	components: PropTypes.objectOf(PropTypes.object),
+	components: PropTypes.objectOf(PropTypes.func),
 };

@@ -43,4 +43,4 @@ setInterval(() => {
 	const snapshot = game.snapshot();
 
 	socket.emit('snapshot', snapshot);
-}, 1000);
+}, 1000 / 30);

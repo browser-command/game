@@ -1,5 +1,6 @@
-import { Serializer } from '@browser-command/core';
-import { Entity, Model, Position, World } from './models.js';
+import { Serializer, Vector3 } from '@browser-command/core';
+import { Entity, Model, Movable, Transform, World } from './models.js';
+import { movement } from './systems/movement.js';
 import { generateUUID } from './util.js';
 
 export class Game {
@@ -7,12 +8,16 @@ export class Game {
 		/** @type {World} */
 		this.world = World.create();
 
-		this.ship = this.create(Position, Model.create({ src: '/models/m1-ship1.obj' }));
+		this.ship = this.create(
+			Transform,
+			Model.create({ src: '/models/m1-ship1.obj' }),
+			Movable.create({ moving: false, target: Vector3.create({ x: 100, y: 100, z: 0 }) })
+		);
 
 		/**
-		 * @type {Map<string, (c: Map<string, object>, world: object) => void>}
+		 * @type {Map<string, (c: Map<string, object>, game: { world: World, dt: number }) => void>}
 		 */
-		this.systems = new Map();
+		this.systems = new Map([['movement', movement]]);
 
 		this.serializer = new Serializer();
 	}
@@ -63,7 +68,7 @@ export class Game {
 
 	start() {
 		setInterval(() => {
-			this.update();
+			this.update(60 / 1000);
 		}, 1000 / 60);
 	}
 
@@ -75,16 +80,13 @@ export class Game {
 		return this.serializer.serialize(this.world);
 	}
 
-	update() {
+	update(dt) {
 		const { entities } = this.world;
 
 		for (const [, entity] of entities) {
 			for (const [, callback] of this.systems) {
-				callback(entity, this.world);
+				callback(entity, { world: this.world, dt });
 			}
 		}
-
-		const { components } = this.get(this.ship);
-		components.get('Position').y += 0.1;
 	}
 }

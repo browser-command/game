@@ -1,2 +1,3 @@
 export * from './Model';
-export * from './Position';
+export * from './Transform';
+export * from './Movable';

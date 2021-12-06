@@ -5,8 +5,6 @@
 - Movable
   - Moving
   - Target position
-  - Current position
-  - Path?
 - Selectable?
   - Selected
 - Model
@@ -24,37 +22,38 @@
 
 ## Systems
 
-- Movement (Movable, Selectable, Position)
+- Movement (Movable, Selectable, Transform)
 
   - `if (target !== position) moving = true; updatePosition() else moving = false`
 
-- Attack (Position, Attacker, Weapons, Movable?)
+- Attack (Transform, Attacker, Weapons, Movable?)
 
 ```javascript
 function attack(components) {
-  if (!(components.has('position') && components.has('attacker') && components.has('weapons'))) return
+	if (!(components.has('position') && components.has('attacker') && components.has('weapons')))
+		return;
 
-  const position = components.get('position')
-  const attacker = components.get('attacker')
-  const weapon   = components.get('weapon')
+	const position = components.get('position');
+	const attacker = components.get('attacker');
+	const weapon = components.get('weapon');
 
-  const target = entities.get(attacker.target)
-  // Is our target still valid? Did it die? Deal with that if so (remove attacker, etc.)
-  const targetPosition = target.components.get('position')
+	const target = entities.get(attacker.target);
+	// Is our target still valid? Did it die? Deal with that if so (remove attacker, etc.)
+	const targetPosition = target.components.get('position');
 
-  if (targetPosition < position + weapon.radius) {
-    components.delete('attacker')
+	if (targetPosition < position + weapon.radius) {
+		components.delete('attacker');
 
-    components.add('combatant')
-    target.components.add('combatant')
-  } else {
-    if (components.has('movable')) {
-      const movable = components.get('movable')
-      movable.target = targetPosition
-    } else {
-      // Give up
-    }
-  }
+		components.add('combatant');
+		target.components.add('combatant');
+	} else {
+		if (components.has('movable')) {
+			const movable = components.get('movable');
+			movable.target = targetPosition;
+		} else {
+			// Give up
+		}
+	}
 }
 ```
 

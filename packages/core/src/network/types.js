@@ -33,7 +33,7 @@ export const model = (id, schema) => {
 			if (properties && typeof properties === 'object') {
 				for (const [key, value] of Object.entries(properties)) {
 					if (!schema[key]) {
-						throw new Error(`Unknown property: ${key}`);
+						continue;
 					}
 
 					obj[key] = value;
@@ -141,6 +141,16 @@ export const uint8 = {
 	create: () => 0,
 	encode: (value, writer) => writer.writeByte(value),
 	decode: (reader) => reader.readByte(),
+};
+
+/**
+ * @type {Datatype}
+ */
+export const boolean = {
+	type: 'boolean',
+	create: () => false,
+	encode: (value, writer) => writer.writeBoolean(value),
+	decode: (reader) => reader.readBoolean(),
 };
 
 /**
