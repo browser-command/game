@@ -1,15 +1,23 @@
 import create from 'zustand';
+import { model } from '@browser-command/core';
 
-export const useGameStore = create((set, get) => {
+export const useGameStore = create((set) => {
 	return {
-		entities: [{ id: '', components: [{ $id: 'model', src: '/models/m1-ship1.obj' }] }],
-		components: {
-			registered: {},
-			register: (name, component) =>
-				set((state) => {
-					state.components.registered[name] = component;
-				}),
-			get: (name) => get().components.registered[name],
+		entities: new Map(),
+		components: {},
+		registerComponent: (id, Component) => {
+			set((state) => {
+				model(id, Component.schema);
+				state.components = {
+					...state.components,
+					[id]: Component,
+				};
+			});
+		},
+		setEntities: (entities) => {
+			set((state) => {
+				state.entities = new Map(entities);
+			});
 		},
 	};
 });

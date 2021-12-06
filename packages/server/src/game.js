@@ -1,11 +1,13 @@
 import { Serializer } from '@browser-command/core';
-import { Entity, World } from './models.js';
+import { Entity, Model, Position, World } from './models.js';
 import { generateUUID } from './util.js';
 
 export class Game {
 	constructor() {
 		/** @type {World} */
 		this.world = World.create();
+
+		this.ship = this.create(Position, Model.create({ src: '/models/m1-ship1.obj' }));
 
 		/**
 		 * @type {Map<string, (c: Map<string, object>, world: object) => void>}
@@ -29,6 +31,8 @@ export class Game {
 		}
 
 		this.world.entities.set(id, entity);
+
+		return id;
 	}
 
 	/**
@@ -79,5 +83,8 @@ export class Game {
 				callback(entity, this.world);
 			}
 		}
+
+		const { components } = this.get(this.ship);
+		components.get('Position').y += 0.1;
 	}
 }

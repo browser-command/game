@@ -1,14 +1,17 @@
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { float, map, model, object, string } from '@browser-command/core';
+import { map, model, object, string } from '@browser-command/core';
 
 import { Serializer } from '@browser-command/core';
 
 import { useSocket } from '../hooks';
+import { useGameStore } from '../stores';
 
 const serializer = new Serializer();
 
 export const Network = ({ children, enabled = true }) => {
+	const setEntities = useGameStore((state) => state.setEntities);
+
 	useEffect(() => {
 		console.log(`Network: ${enabled ? 'enabled' : 'disabled'}`);
 	}, [enabled]);
@@ -30,7 +33,7 @@ export const Network = ({ children, enabled = true }) => {
 	const message = useCallback((data) => {
 		const world = serializer.deserialize(data);
 
-		console.log('snapshot', world);
+		setEntities(world.entities);
 	}, []);
 
 	useEffect(() => {
@@ -55,11 +58,6 @@ Network.propTypes = {
 	children: PropTypes.node,
 	enabled: PropTypes.bool,
 };
-
-export const Position = model('Position', {
-	x: float,
-	y: float,
-});
 
 /**
  * @typedef {{ id: string, components: Map<string, object> }} Entity

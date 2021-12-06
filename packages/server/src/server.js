@@ -4,8 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 
 import path from 'path';
-import { Game } from './game.js';
-import { Position } from './models.js';
+import { Game } from './game';
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -37,8 +36,6 @@ socket.on('connection', (socket) => {
 });
 
 const game = new Game();
-
-game.create(Position);
 
 game.start();
 
