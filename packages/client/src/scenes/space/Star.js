@@ -1,21 +1,22 @@
-import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useLoader } from '@react-three/fiber';
+import React, { useState } from 'react';
+
+import { TextureLoader } from 'three';
+
+import './StarMaterial';
 
 export const Star = () => {
-	const ref = useRef();
-
-	const [time, setTime] = React.useState(0);
+	const [time, setTime] = useState(0);
+	const [texture] = useLoader(TextureLoader, ['/materials/star.jpg']);
 
 	useFrame(() => {
-		setTime((t) => t + 0.01);
+		setTime((t) => t + 0.1);
 	});
 
 	return (
-		<group ref={ref}>
-			<mesh position={[0, 0, 0]}>
-				<sphereBufferGeometry args={[4, 32, 32]} />
-				<starMaterial time={time} />
-			</mesh>
-		</group>
+		<mesh>
+			<sphereBufferGeometry attach="geometry" args={[4, 32, 32]} />
+			<starMaterial attach="material" time={time} texture={texture} />
+		</mesh>
 	);
 };

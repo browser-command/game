@@ -10,7 +10,7 @@ export class StarMaterial extends ShaderMaterial {
 			side: DoubleSide,
 			uniforms: {
 				iTime: { value: 0 },
-				iResolution: { value: new Vector3() },
+				iResolution: { value: new Vector3(1, 1, 1) },
 			},
 			vertexShader: `
       varying vec2 vUv;
@@ -23,8 +23,6 @@ export class StarMaterial extends ShaderMaterial {
       uniform vec3      iResolution;           // viewport resolution (in pixels)
       uniform float     iTime;                 // shader playback time (in seconds)
       uniform sampler2D iChannel0;          // input channel. XX = 2D/Cube
-
-
 
       // based on https://www.shadertoy.com/view/lsf3RH by
       // trisomie21 (THANKS!)
@@ -53,16 +51,9 @@ export class StarMaterial extends ShaderMaterial {
         return mix(r0, r1, f.z)*2.-1.;
       }
 
-      float freqs[4];
-
       void mainImage( out vec4 fragColor, in vec2 fragCoord )
       {
-        freqs[0] = texture( iChannel1, vec2( 0.01, 0.25 ) ).x;
-        freqs[1] = texture( iChannel1, vec2( 0.07, 0.25 ) ).x;
-        freqs[2] = texture( iChannel1, vec2( 0.15, 0.25 ) ).x;
-        freqs[3] = texture( iChannel1, vec2( 0.30, 0.25 ) ).x;
-
-        float brightness	= freqs[1] * 0.25 + freqs[2] * 0.25;
+        float brightness	= 10.0;
         float radius		= 0.24 + brightness * 0.2;
         float invRadius 	= 1.0/radius;
 
@@ -116,9 +107,12 @@ export class StarMaterial extends ShaderMaterial {
           starSphere		= texture( iChannel0, starUV ).rgb;
         }
 
+        vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx*40.0+vec3(0,2,4));
+
         float starGlow	= min( max( 1.0 - dist * ( 1.0 - brightness ), 0.0 ), 1.0 );
         fragColor.rgb	= vec3( f * ( 0.75 + brightness * 0.3 ) * orange ) + starSphere + corona * orange + starGlow * orangeRed;
         fragColor.a		= 1.0;
+        fragColor = vec4(col, 1.0);
       }
 
       void main() {
