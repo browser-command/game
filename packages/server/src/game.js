@@ -1,17 +1,34 @@
-import { Serializer } from './network';
-import { World } from './models.js';
+import { Serializer } from '@browser-command/core';
+import { Entity, World } from './models.js';
+import { generateUUID } from './util.js';
 
 export class Game {
 	constructor() {
+		/** @type {World} */
 		this.world = World.create();
 
 		/**
-		 *
-		 * @type {Map<string, (c: Map<string, object>) => void>}
+		 * @type {Map<string, (c: Map<string, object>, world: object) => void>}
 		 */
 		this.systems = new Map();
 
 		this.serializer = new Serializer();
+	}
+
+	/**
+	 *
+	 * @param {Datatype|object} components
+	 */
+	create(...components) {
+		const id = generateUUID();
+		const entity = Entity.create({ id });
+
+		for (const component of components) {
+			const comp = '$id' in component ? component : component.create();
+			entity.components.set(comp['$id'], comp);
+		}
+
+		this.world.entities.set(id, entity);
 	}
 
 	/**
@@ -29,7 +46,8 @@ export class Game {
 		const entityObject = entities.get(entity);
 
 		for (const component of components) {
-			entityObject.add('$id' in component ? component : component.create());
+			const comp = '$id' in component ? component : component.create();
+			entityObject.components.set(comp['$id'], comp);
 		}
 	}
 
@@ -39,17 +57,27 @@ export class Game {
 		return entities.get(entity);
 	}
 
-	start() {}
+	start() {
+		setInterval(() => {
+			this.update();
+		}, 1000 / 60);
+	}
 
+	/**
+	 *
+	 * @returns {Uint8Array}
+	 */
 	snapshot() {
 		return this.serializer.serialize(this.world);
 	}
 
 	update() {
-		this.entities.forEach((components) => {
-			this.systems.forEach((system) => {
-				system(components, this.entities);
-			});
-		});
+		const { entities } = this.world;
+
+		for (const [, entity] of entities) {
+			for (const [, callback] of this.systems) {
+				callback(entity, this.world);
+			}
+		}
 	}
 }

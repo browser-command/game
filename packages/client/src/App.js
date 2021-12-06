@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Game } from './game';
+import { Game, Network } from './game';
 import { Space } from './scenes';
 
 import './index.css';
@@ -8,7 +8,9 @@ import './index.css';
 function App() {
 	return (
 		<Game>
-			<Space />
+			<Network>
+				<Space />
+			</Network>
 		</Game>
 	);
 }

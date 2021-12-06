@@ -15,11 +15,12 @@ export const models = new Map();
 /**
  * @param {string} id
  * @param {Record<string, Datatype>} schema
+ * @returns {Datatype}
  */
 export const model = (id, schema) => {
+	/** @type {Datatype} */
 	const model = {
 		type: 'model',
-		id,
 		create: (properties) => {
 			const obj = {};
 
@@ -65,7 +66,9 @@ export const model = (id, schema) => {
 		},
 	};
 
-	models.set(id, model);
+	if (id) {
+		models.set(id, model);
+	}
 
 	return model;
 };
@@ -152,10 +155,12 @@ export const string = {
 
 /**
  * @param {Datatype} element
+ * @returns {Datatype}
  */
 export const array = (element) => {
 	return {
 		type: 'array',
+		element,
 		create: () => [],
 		encode: (value, writer) => {
 			writer.writeUnsignedInt(value.length);
@@ -176,10 +181,12 @@ export const array = (element) => {
 
 /**
  * @param {Datatype} element
+ * @returns {Datatype}
  */
 export const map = (element) => {
 	return {
 		type: 'map',
+		element,
 		create: () => new Map(),
 		encode: (value, writer) => {
 			writer.writeUnsignedInt(value.size);
@@ -200,6 +207,9 @@ export const map = (element) => {
 	};
 };
 
+/**
+ * @returns {Datatype}
+ */
 export const object = () => {
 	return {
 		type: 'object',

@@ -4,6 +4,8 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 
 import path from 'path';
+import { Game } from './game.js';
+import { Position } from './models.js';
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -23,9 +25,25 @@ const server = app.listen(process.env.PORT || 5000, () => {
 	console.log('Server listening on port', server.address().port);
 });
 
-const socket = new Server(server);
+const socket = new Server(server, {
+	cors: {
+		origin: '*',
+	},
+});
 
 socket.on('connection', (socket) => {
-	console.log('New client connected');
-	socket.on('disconnect', () => console.log('Client disconnected'));
+	console.log(`New client connected: ${socket.id}`);
+	socket.on('disconnect', () => console.log(`Client disconnected: ${socket.id}`));
 });
+
+const game = new Game();
+
+game.create(Position);
+
+game.start();
+
+setInterval(() => {
+	const snapshot = game.snapshot();
+
+	socket.emit('snapshot', snapshot);
+}, 1000);
