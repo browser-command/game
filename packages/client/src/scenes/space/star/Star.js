@@ -1,13 +1,16 @@
-import { useFrame, useLoader } from '@react-three/fiber';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { TextureLoader, AdditiveBlending } from 'three';
+import { AdditiveBlending } from 'three';
+import { useTexture } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 
 import './SunShaderMaterial';
 import './GlowShaderMaterial';
 import './HaloShaderMaterial';
+import './SolarflareShaderMaterial';
 
-export const Star = ({ radius = 8, spectral = 0.9 }) => {
+export const Star = ({ radius = 8, spectral = 0.85 }) => {
 	const [
 		sunTexture,
 		sunColorLookupTexture,
@@ -17,7 +20,7 @@ export const Star = ({ radius = 8, spectral = 0.9 }) => {
 		sunCoronaTexture,
 		starColorGraph,
 		glowspanTexture,
-	] = useLoader(TextureLoader, [
+	] = useTexture([
 		'/materials/sun_surface.png',
 		'/materials/star_colorshift.png',
 		'/materials/solarflare.png',
@@ -47,8 +50,9 @@ export const Star = ({ radius = 8, spectral = 0.9 }) => {
 					time={time}
 				/>
 			</mesh>
+			<group></group>
 			<mesh>
-				<planeBufferGeometry args={[25, 25]} />
+				<planeBufferGeometry args={[26.5, 26.5]} />
 				<haloShaderMaterial
 					texturePrimary={sunHaloTexture}
 					textureColor={sunHaloColorTexture}
@@ -58,7 +62,7 @@ export const Star = ({ radius = 8, spectral = 0.9 }) => {
 				/>
 			</mesh>
 			<mesh>
-				<planeBufferGeometry args={[120, 120]} />
+				<planeBufferGeometry args={[150, 150]} />
 				<glowShaderMaterial
 					texturePrimary={sunCoronaTexture}
 					textureSpectral={starColorGraph}
@@ -81,4 +85,9 @@ export const Star = ({ radius = 8, spectral = 0.9 }) => {
 			</mesh>
 		</group>
 	);
+};
+
+Star.propTypes = {
+	radius: PropTypes.number,
+	spectral: PropTypes.number,
 };

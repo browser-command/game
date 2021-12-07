@@ -6,6 +6,7 @@ class HaloShaderMaterial extends ShaderMaterial {
 		super({
 			uniforms: {
 				texturePrimary: { type: 't', value: null },
+				textureColor: { type: 't', value: null },
 				textureSpectral: { type: 't', value: null },
 				spectralLookup: { type: 'f', value: 0 },
 				time: { type: 'f', value: 0 },

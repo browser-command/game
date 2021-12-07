@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-import { Stars } from '@react-three/drei';
+import { Stars, GizmoHelper, GizmoViewport } from '@react-three/drei';
 
 import { Particles } from './Particles';
 import { Star } from './star';
@@ -21,6 +21,9 @@ export const Space = () => {
 				<Star />
 			</Suspense>
 			<Effects />
+			<GizmoHelper alignment={'bottom-right'} margin={[80, 80]}>
+				<GizmoViewport axisColors={['red', 'green', 'blue']} />
+			</GizmoHelper>
 		</>
 	);
 };
