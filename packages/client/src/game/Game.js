@@ -29,7 +29,7 @@ export const Game = ({ children, components }) => {
 			{children}
 			<Selection>
 				{entities.map(({ id, components, ...props }) => (
-					<Entity key={id} {...props}>
+					<Entity key={id} id={id} {...props}>
 						{[...components.values()].map(({ $id, ...props }) => {
 							const Component = registered[$id];
 							return Component ? <Component key={$id} {...props} /> : null;

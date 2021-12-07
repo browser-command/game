@@ -1,5 +1,6 @@
 import { Serializer, Vector3 } from '@browser-command/core';
-import { Entity, Model, Movable, Transform, World } from './models.js';
+import { Attacker, Entity, Model, Movable, Transform, World } from './models.js';
+import { attack } from './systems/attack.js';
 import { movement } from './systems/movement.js';
 import { generateUUID } from './util.js';
 
@@ -9,15 +10,18 @@ export class Game {
 		this.world = World.create();
 
 		this.ship = this.create(
-			Transform,
+			Transform.create({ position: Vector3.create({ x: 100 }) }),
 			Model.create({ src: '/models/m1-ship1.obj' }),
-			Movable.create({ moving: false, target: Vector3.create({ x: 100, y: 100, z: 0 }) })
+			Movable
 		);
 
 		/**
 		 * @type {Map<string, (c: Map<string, object>, game: { world: World, dt: number }) => void>}
 		 */
-		this.systems = new Map([['movement', movement]]);
+		this.systems = new Map([
+			['attack', attack],
+			['movement', movement],
+		]);
 
 		this.serializer = new Serializer();
 	}
@@ -85,7 +89,7 @@ export class Game {
 
 		for (const [, entity] of entities) {
 			for (const [, callback] of this.systems) {
-				callback(entity, { world: this.world, dt });
+				callback(entity, { world: this.world, dt, game: this });
 			}
 		}
 	}

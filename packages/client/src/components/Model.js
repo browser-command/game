@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { string } from '@browser-command/core';
@@ -38,9 +38,19 @@ Model.propTypes = {
 };
 
 const ModelInternal = ({ src, position = [0, 0, 0] }) => {
-	const object = useOBJ(src);
+	const obj = useOBJ(src);
 
-	return <primitive object={object} position={position} />;
+	const [object, setObject] = useState(null);
+
+	useEffect(() => {
+		if (!obj) {
+			return;
+		}
+
+		setObject(() => obj.clone());
+	}, [obj]);
+
+	return object && <primitive object={object} position={position} />;
 };
 
 ModelInternal.displayName = 'ModelInternal';

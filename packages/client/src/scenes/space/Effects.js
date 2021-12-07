@@ -14,7 +14,7 @@ export const Effects = () => {
 	return (
 		<effectComposer ref={composer} args={[gl]}>
 			<renderPass attachArray="passes" scene={scene} camera={camera} />
-			<unrealBloomPass attachArray="passes" args={[undefined, 1.8, 1, 0]} />
+			<unrealBloomPass attachArray="passes" args={[undefined, 0.1, 1, 0]} />
 		</effectComposer>
 	);
 };

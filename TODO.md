@@ -16,13 +16,16 @@
 - Health
 - Armor/Shields
 - Weapons
+  - damage
   - radius
+  - aggroRange
 - Combatant
-  - attacker: `boolean`
+  - attacker: `string`
+  - victim: `string`
 
 ## Systems
 
-- Movement (Movable, Selectable, Transform)
+- Movement (Movable, Selectable, Transform, MoveCommand)
 
   - `if (target !== position) moving = true; updatePosition() else moving = false`
 
@@ -78,7 +81,7 @@ if (isAttacker) {
 }
 ```
 
-- Firing(FireWeapon, Weapon, Upgradable?)
+- Firing(FireCommand, Weapon, Upgradable?)
 
 ```javascript
 const laserMk2 = { id: 'laserMk2', damage: 100, cooldown: 10 };

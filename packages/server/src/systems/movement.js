@@ -11,12 +11,18 @@ export const movement = ({ components }, { dt }) => {
 	if (!(movable && transform)) {
 		return;
 	}
-	const target = movable.target;
+	const { target, moving } = movable;
+
+	if (!moving) {
+		return;
+	}
+
 	if (
 		Math.abs(target.x - transform.position.x) < 1 &&
 		Math.abs(target.y - transform.position.y) < 1 &&
 		Math.abs(target.z - transform.position.z) < 1
 	) {
+		movable.moving = false;
 		return;
 	}
 

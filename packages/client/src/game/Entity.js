@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { EntityContext } from '../hooks';
 
-export const Entity = ({ children }) => {
+export const Entity = ({ children, id }) => {
 	const ref = useRef(null);
 	const [registry] = useState(new Map());
 
@@ -19,8 +19,9 @@ export const Entity = ({ children }) => {
 	const context = useMemo(
 		() => ({
 			components,
+			id,
 		}),
-		[components]
+		[components, id]
 	);
 
 	return (
@@ -32,4 +33,5 @@ export const Entity = ({ children }) => {
 
 Entity.propTypes = {
 	children: PropTypes.node,
+	id: PropTypes.string,
 };

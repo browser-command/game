@@ -14,6 +14,12 @@ export const Movable = model('Movable', {
 	target: Vector3,
 });
 
+export const Attacker = model('Attacker', {
+	target: string,
+});
+
+export const Combatant = model('Combatant', {});
+
 /**
  * @typedef {{ id: string, components: Map<string, object> }} Entity
  */
