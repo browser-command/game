@@ -18,7 +18,14 @@ export const Attacker = model('Attacker', {
 	target: string,
 });
 
-export const Combatant = model('Combatant', {});
+export const Combatant = model('Combatant', {
+	attacker: string,
+	victim: string,
+});
+
+export const Firing = model('Firing', {
+	target: Vector3,
+});
 
 /**
  * @typedef {{ id: string, components: Map<string, object> }} Entity

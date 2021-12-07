@@ -21,6 +21,7 @@ export const model = (id, schema) => {
 	/** @type {Datatype} */
 	const model = {
 		type: 'model',
+		id,
 		create: (properties) => {
 			const obj = {};
 

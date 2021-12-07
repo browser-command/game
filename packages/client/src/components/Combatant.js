@@ -4,7 +4,7 @@ import { useComponentRegistry } from '../hooks';
 import PropTypes from 'prop-types';
 import { string } from '@browser-command/core';
 
-export const Combatant = () => {
+export const Combatant = ({ attacker, victim }) => {
 	useComponentRegistry('Combatant', { attacker, victim });
 	return <></>;
 };
@@ -15,6 +15,6 @@ Combatant.schema = {
 };
 
 Combatant.propTypes = {
-	attacker: string,
-	victim: string,
+	attacker: PropTypes.string,
+	victim: PropTypes.string,
 };

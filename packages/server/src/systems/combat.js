@@ -1,28 +1,27 @@
-import { Combatant, Attacker } from './models';
+import { Combatant, Attacker, Transform } from '../models';
 
-export const combat = ({ id, components }, { world: { entities }, game }) => {
-	//need position of current entity
-	const { position } = components.get('Transform');
-	const { attacker, victim } = components.get('Combatant');
-	const radius = 30;
+export const combat = (entity, { get, has, detach, attach }) => {
+	if (!has(entity, Transform, Combatant)) {
+		return;
+	}
 
-	if (id === attacker) {
-		if (isInsideRadius(position.x, position.z, radius, victim.x, victim.z)) {
-			console.log('BANG');
+	const [{ position }, { attacker, victim }] = get(entity, Transform, Combatant);
+	const [{ position: targetPosition }] = get(victim, Transform);
+	const radius = 40;
+
+	if (entity === attacker) {
+		if (isInsideRadius(position.x, position.z, radius, targetPosition.x, targetPosition.z)) {
+			// Do firing stuff
 		} else {
-			game.delete(attacker.id, Combatant);
-			game.delete(victim.id, Combatant);
+			detach(attacker, Combatant);
+			detach(victim, Combatant);
 
-			game.add(attacker.id, Attacker);
+			attach(attacker, Attacker.create({ target: victim }));
 		}
 	} else {
 	}
 };
 
 function isInsideRadius(currX, currY, radius, tarX, tarY) {
-	if ((tarX - currX) * (tarX - currX) + (tarY - currY) * (tarY - currY) <= radius * radius) {
-		return true;
-	} else {
-		return false;
-	}
+	return (tarX - currX) * (tarX - currX) + (tarY - currY) * (tarY - currY) <= radius * radius;
 }

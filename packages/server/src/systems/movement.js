@@ -1,11 +1,12 @@
 import { Vector3 } from 'three';
+import { Movable, Transform } from '../models.js';
 
 /**
- * @param {Entity} entity
+ * @param {string} entity
+ * @param {Game} game
  */
-export const movement = ({ components }, { dt }) => {
-	const movable = components.get('Movable');
-	const transform = components.get('Transform');
+export const movement = (entity, { get, dt }) => {
+	const [movable, transform] = get(entity, Movable, Transform);
 	// const selectable = components.get('Selectable');
 
 	if (!(movable && transform)) {
