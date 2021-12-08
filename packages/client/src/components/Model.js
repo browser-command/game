@@ -38,7 +38,7 @@ const ModelInternal = ({ src }) => {
 		setObject(() => obj.clone());
 	}, [obj]);
 
-	return object && <primitive scale={[0.1, 0.1, 0.1]} object={object} />;
+	return object && <primitive scale={[0.3, 0.3, 0.3]} object={object} />;
 };
 
 ModelInternal.displayName = 'ModelInternal';

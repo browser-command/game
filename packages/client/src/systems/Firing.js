@@ -1,7 +1,6 @@
 import { useFrame } from '@react-three/fiber';
 import { Vector3, BoxBufferGeometry, Color, MeshBasicMaterial, Matrix4, Quaternion } from 'three';
 import React, { useEffect, useCallback, useState } from 'react';
-import useSound from 'use-sound';
 import { useSocket } from '../hooks';
 
 const direction = new Vector3();
@@ -15,9 +14,7 @@ const quaternion = new Quaternion();
 
 const up = new Vector3(0, 1, 0);
 
-const geometry = new BoxBufferGeometry(0.1, 0.1, 1);
-const lightgreen = new Color('lightgreen');
-const laserMaterial = new MeshBasicMaterial({ color: lightgreen });
+const geometry = new BoxBufferGeometry(0.3, 0.3, 3);
 
 const rotate = (position, target) => {
 	direction.copy(target);
@@ -58,7 +55,14 @@ export const Firing = () => {
 	const fire = useCallback((data) => {
 		setLasers((lasers) => [
 			...lasers,
-			{ ...data, position: { ...data.origin }, quaternion: rotate(data.origin, data.target) },
+			{
+				...data,
+				position: { ...data.origin },
+				quaternion: rotate(data.origin, data.target),
+				material: new MeshBasicMaterial({
+					color: new Color(data.weapon.info.color || 'lightgreen'),
+				}),
+			},
 		]);
 	}, []);
 
@@ -75,13 +79,13 @@ export const Firing = () => {
 
 	return (
 		<group>
-			{lasers.map(({ position }, i) => (
+			{lasers.map(({ position, material }, i) => (
 				<mesh
 					key={i}
 					position={[position.x, position.y, position.z]}
 					quaternion={quaternion}
 					geometry={geometry}
-					material={laserMaterial}
+					material={material}
 				/>
 			))}
 		</group>

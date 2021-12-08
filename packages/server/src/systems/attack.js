@@ -40,8 +40,6 @@ export const attack = (entity, { get, has, detach, attach, exists }) => {
 			movable.moving = false;
 		}
 
-		console.log('attacking');
-
 		//switch to combatant
 		detach(entity, Attacker);
 

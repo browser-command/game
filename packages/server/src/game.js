@@ -10,28 +10,6 @@ export class Game {
 		/** @type {World} */
 		this.world = World.create();
 
-		this.ship = this.create(
-			Transform.create({ position: Vector3.create({ x: 100 }) }),
-			Model.create({ src: 'models/m1-ship1.obj' }),
-			Movable,
-			Health.create({ health: 100 })
-		);
-
-		this.ship2 = this.create(
-			Transform.create({ position: Vector3.create({ x: -100 }) }),
-			Model.create({ src: 'models/m1-ship1.obj' }),
-			Movable,
-			Attacker.create({ target: this.ship }),
-			Weapon.create({ cooldown: 0, info: { damage: 10, cooldown: 2, radius: 30 } }),
-			Health.create({ health: 100 })
-		);
-
-		setTimeout(() => {
-			const [movable] = this.get(this.ship, Movable);
-			movable.target = Vector3.create({ x: -200 });
-			movable.moving = true;
-		}, 10000);
-
 		/**
 		 * @type {Map<string, (entity: string, game: Game) => void>}
 		 */

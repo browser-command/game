@@ -53,6 +53,7 @@ export const model = (id, schema) => {
 			const obj = {};
 
 			const id = reader.readString(Encoding.Utf8);
+
 			if (id !== id) {
 				throw new Error('Invalid model id');
 			}
@@ -264,6 +265,7 @@ export const object = () => {
 			if (isModel) {
 				const id = reader.readString(Encoding.Utf8);
 				const model = models.get(id);
+
 				if (model) {
 					return model.decode(reader);
 				} else {
@@ -286,6 +288,8 @@ export const object = () => {
 					throw new Error(`Unknown type ${type}`);
 				}
 			}
+
+			return result;
 		},
 	};
 };

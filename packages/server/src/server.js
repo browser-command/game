@@ -7,6 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { Game } from './game';
+import { Demo } from './demo'
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -41,7 +42,7 @@ socket.on('connection', (socket) => {
 	socket.on('disconnect', () => console.log(`Client disconnected: ${socket.id}`));
 });
 
-const game = new Game(socket);
+const game = new Demo(socket)
 
 game.start();
 
