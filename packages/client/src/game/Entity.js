@@ -20,6 +20,7 @@ export const Entity = ({ children, id }) => {
 		() => ({
 			components,
 			id,
+			ref,
 		}),
 		[components, id]
 	);

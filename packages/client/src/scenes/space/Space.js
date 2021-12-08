@@ -21,6 +21,7 @@ export const Space = () => {
 				<Star />
 			</Suspense>
 			<Effects />
+
 			<GizmoHelper alignment={'bottom-right'} margin={[80, 80]}>
 				<GizmoViewport axisColors={['red', 'green', 'blue']} />
 			</GizmoHelper>

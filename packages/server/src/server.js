@@ -4,23 +4,29 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 
 import path from 'path';
+import { fileURLToPath } from 'url';
+
 import { Game } from './game';
 
 const production = process.env.NODE_ENV === 'production';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 if (production) {
-	const build = path.resolve(__dirname, '../../client/build');
-	const index = path.join(build, 'index.html');
+	const client = path.resolve(__dirname, '../../client/build');
 
-	app.use(express.static(build));
-	app.get('*', (req, res) => res.sendFile(index));
+	app.use('/client', express.static(client));
+
+	const auth = path.resolve(__dirname, '../../userauth/build');
+	app.use('/', express.static(auth));
 }
 
-const server = app.listen(process.env.PORT || 5000, () => {
+const server = app.listen(production ? 3000 : 5000, () => {
 	console.log('Server listening on port', server.address().port);
 });
 
@@ -35,7 +41,7 @@ socket.on('connection', (socket) => {
 	socket.on('disconnect', () => console.log(`Client disconnected: ${socket.id}`));
 });
 
-const game = new Game();
+const game = new Game(socket);
 
 game.start();
 

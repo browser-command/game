@@ -15,7 +15,7 @@ export const Weapon = ({ info, cooldown }) => {
 };
 
 Weapon.schema = {
-	info: object,
+	info: object(),
 	cooldown: uint32,
 };
 

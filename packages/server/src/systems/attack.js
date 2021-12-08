@@ -1,15 +1,26 @@
 //Transform, attacker, weapons, movable?
 
-import { Attacker, Combatant, Movable, Transform } from '../models';
+import { Attacker, Combatant, Movable, Transform, Weapon } from '../models';
 
-export const attack = (entity, { get, has, detach, attach }) => {
+export const attack = (entity, { get, has, detach, attach, exists }) => {
 	if (!has(entity, Transform, Attacker)) return;
 
-	const [transform] = get(entity, Transform);
-	const [{ target }] = get(entity, Attacker);
-	// const weapon = components.get('Weapon');
+	if (!has(entity, Weapon)) {
+		detach(entity, Attacker);
+		return;
+	}
 
-	const radius = 30; // weapon.radius;
+	const [{ target }] = get(entity, Attacker);
+
+	if (!exists(target)) {
+		detach(entity, Attacker);
+		return;
+	}
+
+	const [transform] = get(entity, Transform);
+	const [{ info }] = get(entity, Weapon);
+
+	const radius = info.radius; // weapon.radius;
 
 	//would need the entity id for this right?
 	const [{ position: targetPosition }] = get(target, Transform);

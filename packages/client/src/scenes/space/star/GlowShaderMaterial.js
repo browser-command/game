@@ -12,7 +12,7 @@ class GlowShaderMaterial extends ShaderMaterial {
 			blending: AdditiveBlending,
 			color: 0xffffff,
 			transparent: true,
-			depthTest: true,
+			depthTest: false,
 			depthWrite: true,
 			polygonOffset: true,
 			polygonOffsetFactor: -1,

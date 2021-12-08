@@ -1,8 +1,22 @@
-import { map, model, object, string, Vector3, Quaternion, boolean } from '@browser-command/core';
+import {
+	map,
+	model,
+	object,
+	string,
+	Vector3,
+	Quaternion,
+	boolean,
+	uint32,
+	int32,
+} from '@browser-command/core';
 
 export const Transform = model('Transform', {
 	position: Vector3,
 	rotation: Quaternion,
+});
+
+export const Health = model('Health', {
+	health: int32,
 });
 
 export const Model = model('Model', {
@@ -24,7 +38,16 @@ export const Combatant = model('Combatant', {
 });
 
 export const Firing = model('Firing', {
-	target: Vector3,
+	victim: string,
+});
+
+export const Weapon = model('Weapon', {
+	info: object(),
+	cooldown: uint32,
+});
+
+export const Selectable = model('Selectable', {
+	selected: boolean,
 });
 
 /**

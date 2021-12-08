@@ -226,7 +226,7 @@ export const object = () => {
 		type: 'object',
 		create: () => ({}),
 		encode: (value, writer) => {
-			if (!!value && value.constructor === Object) {
+			if ('$id' in value) {
 				writer.writeBoolean(true);
 
 				const id = value['$id'];

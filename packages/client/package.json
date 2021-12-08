@@ -1,6 +1,7 @@
 {
 	"name": "client",
 	"version": "0.1.0",
+	"homepage": ".",
 	"dependencies": {
 		"@browser-command/core": "^1.0.0",
 		"@craco/craco": "^6.4.2",
@@ -19,6 +20,7 @@
 		"socket.io-client": "^4.4.0",
 		"three": "^0.135.0",
 		"three-stdlib": "^2.6.1",
+		"use-sound": "^4.0.1",
 		"web-vitals": "^1.0.1",
 		"zustand": "^3.6.6"
 	},

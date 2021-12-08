@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Vector3, Quaternion } from '@browser-command/core';
 
-import { useComponentRegistry } from '../hooks';
+import { useComponentRegistry, useEntity } from '../hooks';
 
 export const Transform = ({ position, rotation }) => {
 	useComponentRegistry('Transform', {
 		position,
 		rotation,
 	});
+
+	const { ref } = useEntity();
+
+	useEffect(() => {
+		if (ref.current) {
+			ref.current.position.copy(position);
+			ref.current.quaternion.copy(rotation);
+		}
+	}, [position, rotation, ref.current]);
 
 	return <></>;
 };

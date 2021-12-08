@@ -1,5 +1,5 @@
 import { BinaryReader, BinaryWriter, Encoding } from 'csharp-binary-stream';
-import { models } from './types.js';
+import { models } from './types';
 
 export class Serializer {
 	serialize(obj) {

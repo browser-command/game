@@ -1,4 +1,4 @@
-import { float, model } from './network/index.js';
+import { float, model } from './network';
 
 export const Vector3 = model('Vector3', {
 	x: float,
